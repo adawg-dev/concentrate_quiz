@@ -1,7 +1,26 @@
-Front-end: A React application that provides a simple login page and two protected pages: a dashboard and a profile page.
+# Concentrate Quiz (Next.js + Azure AD + Postgres)
 
-Authentication: The application must use Azure Single Sign-On (SSO) for user authentication. The login page should redirect users to the Azure login page. Upon successful authentication, the user should be redirected back to the dashboard.
+Single Next.js app with Azure SSO and a Postgres users table (id UUID, data jsonb). Docker Compose runs web+db with one command.
 
-Back-end and Database: After a successful SSO login, your application should store the user's data (such as their name and email from Azure) in a PostgreSQL database. The dashboard and profile pages should retrieve and display this user-specific data from the database.
+## Stack
+- Next.js App Router
+- NextAuth (Azure AD)
+- Postgres (users: id uuid pk, data jsonb)
 
-Containerization: The entire application stack (React front-end, Node.js back-end, and PostgreSQL database) must be containerized using Docker. Provide a single docker-compose.yml file that allows me to build and run the entire application with a single command (docker-compose up).
+## Setup
+1. Fill Azure credentials and `NEXTAUTH_SECRET` into `.env`
+2. Start containers:
+
+```
+docker compose up --build
+```
+
+3. Visit http://localhost:3000
+
+## Schema
+The app will auto-create table `users(id uuid primary key, data jsonb not null)` on first use.
+
+## Pages
+- `/login`: start Azure SSO
+- `/dashboard`: protected, writes and shows your user record
+- `/profile`: protected, shows your user data

@@ -1,9 +1,8 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:13
-    container_name: postgres_db
+  db:
+    image: postgres:16-alpine
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -12,35 +11,29 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
-  backend:
-    build: ./backend
-    container_name: backend_app
-    restart: on-failure
-    ports:
-      - "4000:4000"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      AZURE_AD_CLIENT_ID: ${AZURE_AD_CLIENT_ID}
-      AZURE_AD_TENANT_ID: ${AZURE_AD_TENANT_ID}
-      FRONTEND_URL: http://localhost:3000
-
-  frontend:
-    build: ./frontend
-    container_name: frontend_app
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: on-failure
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+      - db
     environment:
-      - REACT_APP_AZURE_AD_CLIENT_ID=${AZURE_AD_CLIENT_ID}
-      - REACT_APP_AZURE_AD_TENANT_ID=${AZURE_AD_TENANT_ID}
-      - REACT_APP_AZURE_AD_REDIRECT_URI=http://localhost:3000
-      - REACT_APP_BACKEND_URL=http://localhost:4000
+      NODE_ENV: development
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      AZURE_AD_CLIENT_ID: ${AZURE_AD_CLIENT_ID}
+      AZURE_AD_CLIENT_SECRET: ${AZURE_AD_CLIENT_SECRET}
+      AZURE_AD_TENANT_ID: ${AZURE_AD_TENANT_ID}
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: npm run dev
 
 volumes:
-  postgres_data:
+  db_data:
