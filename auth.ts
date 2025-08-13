@@ -5,7 +5,8 @@ import AzureADProvider from "next-auth/providers/azure-ad";
 
 async function upsertUserToBackend(user: { email: string; name: string }) {
   try {
-    const response = await fetch(`http://localhost:3010/api/v0/users`, {
+  const baseUrl = process.env.BACKEND_URL || 'http://localhost:3010';
+  const response = await fetch(`${baseUrl}/api/v0/users`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user }: { user: { email?: string | null; name?: string | null } }) {
       // This runs after successful authentication
       if (user.email && user.name) {
         console.log('User signed in:', user);
@@ -61,7 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async session({ session }) {
+  async session({ session }: { session: any }) {
       // Add any additional user data to the session if needed
       return session;
     },

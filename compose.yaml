@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-dev}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/sql/databases.sql:/docker-entrypoint-initdb.d/1.databases.sql:ro
+      - ./backend/sql/schema.sql:/docker-entrypoint-initdb.d/2.schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    image: node:20
+    container_name: cq-backend
+    working_dir: /app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3010
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-dev}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dev}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: /bin/sh -lc "npm install && npm run dev"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3010:3010"
+
+  frontend:
+    image: node:20
+    container_name: cq-frontend
+    working_dir: /app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXTAUTH_URL: http://localhost:3000
+      AUTH_URL: http://localhost:3000
+      AUTH_MICROSOFT_ENTRA_ID_ID: ${AUTH_MICROSOFT_ENTRA_ID_ID:-changeme}
+      AUTH_MICROSOFT_ENTRA_ID_SECRET: ${AUTH_MICROSOFT_ENTRA_ID_SECRET:-changeme}
+      BACKEND_URL: http://backend:3010
+    volumes:
+        - ./:/app
+        - /app/node_modules
+    command: /bin/sh -lc "corepack enable && (yarn install --immutable || yarn install) && yarn dev -p 3000 -H 0.0.0.0"
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+
+networks:
+  default:
+    name: concentrate_quiz
