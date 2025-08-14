@@ -1,8 +1,8 @@
-"use client"
+'use client';
 
-import { Button } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { signOut } from 'next-auth/react';
+import { Button } from '@mantine/core';
 
 export function Logout() {
   const handleLogout = () => signOut({ callbackUrl: '/' });

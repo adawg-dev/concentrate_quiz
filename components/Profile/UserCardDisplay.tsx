@@ -1,7 +1,7 @@
 'use client';
 
-import { Avatar, Card, Text } from '@mantine/core';
 import { motion } from 'framer-motion';
+import { Avatar, Card, Text } from '@mantine/core';
 import classes from './UserCardImage.module.css';
 
 interface UserCardDisplayProps {
@@ -28,7 +28,7 @@ export function UserCardDisplay({ user }: UserCardDisplayProps) {
       y: 0,
       transition: {
         duration: 0.75,
-      }
+      },
     },
   };
 
@@ -46,7 +46,10 @@ export function UserCardDisplay({ user }: UserCardDisplayProps) {
         </motion.div>
         <motion.div variants={itemVariants}>
           <Avatar
-            src={user?.image || 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png'}
+            src={
+              user?.image ||
+              'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png'
+            }
             size={80}
             radius={80}
             mx="auto"

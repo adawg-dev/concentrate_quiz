@@ -1,8 +1,8 @@
+import path from 'path';
+import cors from 'cors';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
-import path from 'path';
-import cors from 'cors';
 import { getUserByEmail, upsertUserByEmail } from './db';
 
 const app = express();
@@ -21,7 +21,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/api/v0/users/by-email', async (req, res) => {
   try {
     const { email } = req.query;
-    
+
     if (!email || typeof email !== 'string') {
       return res.status(400).json({ error: 'Email parameter is required' });
     }
@@ -36,7 +36,7 @@ app.get('/api/v0/users/by-email', async (req, res) => {
     const user = {
       id: userData.id || null,
       email: userData.email,
-      name: userData.name
+      name: userData.name,
     };
 
     res.json(user);

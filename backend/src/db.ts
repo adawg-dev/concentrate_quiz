@@ -30,7 +30,7 @@ export async function upsertUserByEmail(data: Record<string, any>) {
   console.log('upsertUserByEmail called with data:', data);
   const email = data?.email;
   if (!email) {
-    console.warn("no email found");
+    console.warn('no email found');
     return;
   }
 
@@ -56,10 +56,9 @@ export async function upsertUserByEmail(data: Record<string, any>) {
 }
 
 export async function getUserByEmail(email: string) {
-  const res = await pg.query(
-    `SELECT id, data FROM users WHERE data->>'email' = $1 LIMIT 1`,
-    [email]
-  );
+  const res = await pg.query(`SELECT id, data FROM users WHERE data->>'email' = $1 LIMIT 1`, [
+    email,
+  ]);
 
   if (res.rows.length === 0) {
     return null;
@@ -68,6 +67,6 @@ export async function getUserByEmail(email: string) {
   const row = res.rows[0];
   return {
     id: row.id,
-    ...row.data
+    ...row.data,
   };
 }

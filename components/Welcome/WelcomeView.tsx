@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Text, Title } from '@mantine/core';
 import { motion } from 'framer-motion';
+import { Text, Title } from '@mantine/core';
 import classes from './Welcome.module.css';
 
 interface WelcomeViewProps {
@@ -26,7 +26,7 @@ export function WelcomeView({ name }: WelcomeViewProps) {
       opacity: 1,
       transition: {
         duration: 0.75,
-      }
+      },
     },
   };
 
@@ -35,7 +35,12 @@ export function WelcomeView({ name }: WelcomeViewProps) {
       <motion.div variants={itemVariants}>
         <Title className={classes.title} ta="center" mt={100}>
           Welcome{' '}
-          <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
+          <Text
+            inherit
+            variant="gradient"
+            component="span"
+            gradient={{ from: 'pink', to: 'yellow' }}
+          >
             {name || 'User'}
           </Text>
         </Title>

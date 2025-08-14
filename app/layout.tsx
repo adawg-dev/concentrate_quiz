@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import '@mantine/core/styles.css';
-import { usePathname } from 'next/navigation';
-import { Appbar } from '@/components/Appbar/Appbar';
+
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+import { Appbar } from '@/components/Appbar/Appbar';
 import { theme } from '../theme';
 
 // export const metadata = {
@@ -29,10 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <MantineProvider theme={theme}>
           <div style={{ display: 'flex' }}>
-            {!isLoginPage && <Appbar/>}
-            <main style={{ flex: 1 }}>
-              {children}
-            </main>
+            {!isLoginPage && <Appbar />}
+            <main style={{ flex: 1 }}>{children}</main>
           </div>
         </MantineProvider>
       </body>

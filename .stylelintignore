@@ -1,2 +1,5 @@
 .next
 out
+coverage
+backend/dist
+backend/node_modules

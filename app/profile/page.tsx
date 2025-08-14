@@ -1,9 +1,7 @@
-import { UserCardImage } from "@/components/Profile/UserCardImage";
+import { UserCardImage } from '@/components/Profile/UserCardImage';
 
 function HomePage() {
-  return (
-    <UserCardImage />
-  );
+  return <UserCardImage />;
 }
 
 export default HomePage;

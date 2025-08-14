@@ -1,14 +1,9 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { IconGauge, IconHome2, IconLogout, IconUser } from '@tabler/icons-react';
 import { signOut } from 'next-auth/react';
-import {
-  IconGauge,
-  IconHome2,
-  IconLogout,
-  IconUser,
-} from '@tabler/icons-react';
 import { Stack, Tooltip, UnstyledButton } from '@mantine/core';
 import classes from './Appbar.module.css';
 
@@ -39,10 +34,14 @@ export function Appbar() {
   const router = useRouter();
 
   const getActiveIndex = () => {
-    if (pathname === '/dashboard') {return 0;}
-    if (pathname === '/profile') {return 1;}
+    if (pathname === '/dashboard') {
+      return 0;
+    }
+    if (pathname === '/profile') {
+      return 1;
+    }
     return -1;
-  }
+  };
   const [active, setActive] = useState(-1);
 
   useEffect(() => {
@@ -51,8 +50,12 @@ export function Appbar() {
 
   const handleNavigation = (index: number) => {
     setActive(index);
-    if (index === 0) {router.push('/dashboard');}
-    if (index === 1) {router.push('/profile');}
+    if (index === 0) {
+      router.push('/dashboard');
+    }
+    if (index === 1) {
+      router.push('/profile');
+    }
   };
 
   const handleLogout = () => {
@@ -64,9 +67,7 @@ export function Appbar() {
       {...link}
       key={link.label}
       active={index === active}
-      onClick={() => 
-        handleNavigation(index)
-      }
+      onClick={() => handleNavigation(index)}
     />
   ));
 

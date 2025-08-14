@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import NextAuth from "next-auth"
-import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id"
-import AzureADProvider from "next-auth/providers/azure-ad";
+import NextAuth from 'next-auth';
+import AzureADProvider from 'next-auth/providers/azure-ad';
+import MicrosoftEntraID from 'next-auth/providers/microsoft-entra-id';
 
 async function upsertUserToBackend(user: { email: string; name: string }) {
   try {
-  const baseUrl = process.env.BACKEND_URL || 'http://localhost:3010';
-  const response = await fetch(`${baseUrl}/api/v0/users`, {
+    const baseUrl = process.env.BACKEND_URL || 'http://localhost:3010';
+    const response = await fetch(`${baseUrl}/api/v0/users`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ async function upsertUserToBackend(user: { email: string; name: string }) {
     console.error('Error upserting user to backend:', error);
   }
 }
- 
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     MicrosoftEntraID({
@@ -34,18 +34,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
       authorization: {
         params: {
-          prompt: "select_account",
-        }
-      }
+          prompt: 'select_account',
+        },
+      },
     }),
     AzureADProvider({
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
       clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
       authorization: {
         params: {
-          prompt: "select_account",
-        }
-      }
+          prompt: 'select_account',
+        },
+      },
     }),
   ],
   callbacks: {
@@ -62,9 +62,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-  async session({ session }: { session: any }) {
+    async session({ session }: { session: any }) {
       // Add any additional user data to the session if needed
       return session;
     },
   },
-})
+});

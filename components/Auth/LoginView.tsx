@@ -1,22 +1,16 @@
-"use client"
+'use client';
 
-import {
-  Button,
-  Container,
-  Paper,
-  Text,
-  Title,
-} from '@mantine/core';
 import { IconBrandAzure } from '@tabler/icons-react';
 import { signIn } from 'next-auth/react';
+import { Button, Container, Paper, Text, Title } from '@mantine/core';
 import classes from './LoginView.module.css';
 
 export function LoginView() {
   const handleMicrosoftSignIn = () => {
-    signIn('microsoft-entra', { 
+    signIn('microsoft-entra', {
       callbackUrl: '/dashboard',
-      redirect: false
-    })
+      redirect: false,
+    });
   };
 
   return (
@@ -25,9 +19,7 @@ export function LoginView() {
         Welcome back!
       </Title>
 
-      <Text className={classes.subtitle}>
-        Sign on with your Microsoft account to continue
-      </Text>
+      <Text className={classes.subtitle}>Sign on with your Microsoft account to continue</Text>
 
       <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
         <Button
