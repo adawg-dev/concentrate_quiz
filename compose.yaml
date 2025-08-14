@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./backend/sql/databases.sql:/docker-entrypoint-initdb.d/1.databases.sql:ro
@@ -41,7 +41,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "3010:3010"
+      - "127.0.0.1:3010:3010"
 
   frontend:
     image: node:20
@@ -51,8 +51,10 @@ services:
     environment:
       NODE_ENV: development
       NEXT_TELEMETRY_DISABLED: 1
-      NEXTAUTH_URL: http://localhost:3000
-      AUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: https://wil-gpu-21-vm-01.bluelobster.ai
+      AUTH_URL: https://wil-gpu-21-vm-01.bluelobster.ai
+      AUTH_TRUST_HOST: "true"
+      NEXT_PUBLIC_BACKEND_URL: https://wil-gpu-21-vm-01.bluelobster.ai/api
       AUTH_MICROSOFT_ENTRA_ID_ID: ${AUTH_MICROSOFT_ENTRA_ID_ID:-changeme}
       AUTH_MICROSOFT_ENTRA_ID_SECRET: ${AUTH_MICROSOFT_ENTRA_ID_SECRET:-changeme}
       BACKEND_URL: http://backend:3010
@@ -63,7 +65,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
 
 volumes:
   pgdata:

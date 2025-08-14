@@ -26,7 +26,7 @@ export function LoginView() {
       </Title>
 
       <Text className={classes.subtitle}>
-        Sign on with your Microsoft or Github account to continue
+        Sign on with your Microsoft account to continue
       </Text>
 
       <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
