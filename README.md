@@ -92,6 +92,8 @@ Dev commands (no Docker):
 	```
 	- Tests live alongside components in `components/**` and utilities in `lib/**`
 	- `test-utils/` provides a Mantine‑aware render helper
+  - Tests ensure components function as intended (i.e., navigation via buttons), error handling, conditional rendering
+  - Service tests ensure proper communication between front and backend, proper fetch calls, proper error handling
 
 - Backend
 	- Jest + ts-jest; Supertest for HTTP routes
@@ -114,17 +116,6 @@ Dev commands (no Docker):
 - CI‑friendly script ordering: Prettier → ESLint/Stylelint → Typecheck → Jest
 - Coverage output is ignored by Stylelint to avoid spurious failures
 
-## Storybook
-
-- Run Storybook locally for component development:
-	```powershell
-	npm run storybook
-	```
-	Build static bundle:
-	```powershell
-	npm run storybook:build
-	```
-
 ## Environment variables
 
 Frontend/server:
@@ -144,15 +135,9 @@ Backend:
 - `jest` – Jest with coverage
 - `prettier:check` / `prettier:write` – Prettier helpers
 - `lint` – ESLint + Stylelint
-- `storybook` / `storybook:build` – Storybook helpers
 
 ## Scripts (backend)
 
 - `dev` – nodemon (ts-node) for live server reload
 - `build` – compile TypeScript
 - `test` – build + Jest (ts-jest)
-
-## Troubleshooting
-
-- Frontend test failing on ESM import from `next-auth`: the tests mock `next-auth` imports where a server component requires it; if you add more server components that import ESM‑only modules, mock them in tests.
-- Stylelint errors in coverage: coverage CSS is ignored via `.stylelintignore`. If you change output paths, update the ignore file.
