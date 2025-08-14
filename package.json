@@ -24,6 +24,7 @@
     "@mantine/hooks": "8.2.4",
     "@next/bundle-analyzer": "^15.3.3",
     "@tabler/icons-react": "^3.34.0",
+    "motion": "^12.23.12",
     "next": "15.3.3",
     "next-auth": "^5.0.0-beta.29",
     "pg": "^8.16.3",
